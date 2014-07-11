@@ -15,7 +15,8 @@ var gitUpdater = require('./updaters/git')
 var lodash = JSON.parse(fs.readFileSync('lodash.json', 'utf8'));
 var underscore = JSON.parse(fs.readFileSync('underscore.json', 'utf8'));
 var list = JSON.parse(fs.readFileSync('list.json', 'utf8'));
-var packages = [list];
+var velocity = JSON.parse(fs.readFileSync('velocity.json', 'utf8'));
+var packages = [list, lodash, underscore, velocity];
 
 // Check if auto update enabled for library
 var checkAutoUpdate = function(package) {
