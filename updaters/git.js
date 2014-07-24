@@ -47,7 +47,14 @@ var update = function (package, callback) {
 	  					 allFiles = allFiles.concat(files);
 
 	  				});
-	  				var fileCount = 0;
+	  				console.log('All files for this version', allFiles.length);
+
+  					if(allFiles.length !==0){
+	  					var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json'));
+	  					var packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+	  					packageJSON.version = tag;
+	  					fs.writeFileSync(packagePath, JSON.stringify(packageJSON, undefined, 4));
+  					} 
 	  				async.eachSeries(allFiles, function(file, callback){
 	  					var fileName = path.relative(path.join(TEMP_FOLDER, package.name, basePath), file);
 	  					var fileTarget = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, tag, fileName));
@@ -61,21 +68,12 @@ var update = function (package, callback) {
 			  							console.log('Some strange error occured here'.red);
 			  							callback();
 			  						} else {
-			  							fileCount++;
 			  							callback();
 			  						}
 	  							})
 	  						}
 							})
 	  				}, function () {
-	  					if(fileCount !==0){
-		  					var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json'));
-		  					var packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-		  					packageJSON.version = tag;
-		  					fs.writeFileSync(packagePath, JSON.stringify(packageJSON, undefined, 4));
-	  					} else {
-	  						console.log('no files were copied'.red);
-	  					}
 	  					callback();
 	  				})
 	  			})
