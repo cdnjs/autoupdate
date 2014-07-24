@@ -48,8 +48,10 @@ var update = function (package, callback) {
 
 	  				});
 	  				console.log('All files for this version', allFiles.length);
+  						console.log(allFiles.length, allFiles.length !==0)
 
   					if(allFiles.length !==0){
+  						console.log('Updated package.json to version'.green, tag);
 	  					var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json'));
 	  					var packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
 	  					packageJSON.version = tag;
