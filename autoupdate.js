@@ -6,6 +6,8 @@ var colors = require('colors');
 var async = require('async');
 var config = require('./config');
 var rimraf = require('rimraf');
+var glob = require('glob');
+var _ = require('lodash');
 var TEMP_FOLDER = config.TEMP_FOLDER;
 
 var gitUpdater = require('./updaters/git')
@@ -45,6 +47,16 @@ var startAutoUpdate = function(package, callback) {
 var initialize = function () {
 	console.log('Starting Auto Update'.cyan)
 	console.log('-----------------------');
+	var filenames = glob.sync("../cdnjs/ajax/libs/*/*.json");
+	var packages = _.chain(filenames)
+		.map(function(filename) {
+			return JSON.parse(fs.readFileSync(filename, 'utf8'))
+		})
+		.filter(function(package) {
+			return typeof package.autoupdate === 'object';
+		})
+		.value();
+
 	async.eachSeries(packages, function (package, callback) {
 			startAutoUpdate(package, callback);
 
