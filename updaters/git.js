@@ -67,10 +67,10 @@ var update = function (package, callback) {
 							})
 	  				}, function () {
 	  					var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json'));
-	  					var package = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-	  					package.version = tag;
-	  					fs.writeFileSync(packagePath, JSON.stringify(package, undefined, 4));
-	  					
+	  					var packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+	  					packageJSON.version = tag;
+	  					fs.writeFileSync(packagePath, JSON.stringify(packageJSON, undefined, 4));
+
 	  					callback();
 	  				})
 	  			})
