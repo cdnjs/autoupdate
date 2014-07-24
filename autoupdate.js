@@ -14,12 +14,6 @@ var gitUpdater = require('./updaters/git')
 
 // Temp
 
-var lodash = JSON.parse(fs.readFileSync('lodash.json', 'utf8'));
-var underscore = JSON.parse(fs.readFileSync('underscore.json', 'utf8'));
-var list = JSON.parse(fs.readFileSync('list.json', 'utf8'));
-var velocity = JSON.parse(fs.readFileSync('velocity.json', 'utf8'));
-var packages = [list, lodash, underscore, velocity];
-
 // Check if auto update enabled for library
 var checkAutoUpdate = function(package) {
 	if(typeof package.autoupdate === 'object') {
@@ -47,7 +41,7 @@ var startAutoUpdate = function(package, callback) {
 var initialize = function () {
 	console.log('Starting Auto Update'.cyan)
 	console.log('-----------------------');
-	var filenames = glob.sync("../cdnjs/ajax/libs/*/*.json");
+	var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/*/*.json");
 	var packages = _.chain(filenames)
 		.map(function(filename) {
 			return JSON.parse(fs.readFileSync(filename, 'utf8'))
