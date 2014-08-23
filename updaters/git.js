@@ -55,7 +55,7 @@ var update = function (package, callback) {
               var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json'));
               var packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
               packageJSON.version = tag;
-              fs.writeFileSync(packagePath, JSON.stringify(packageJSON, undefined, 2));
+              fs.writeFileSync(packagePath, JSON.stringify(packageJSON, undefined, 2)  + '\n');
             } 
             async.eachSeries(allFiles, function(file, callback){
               var fileName = path.relative(path.join(TEMP_FOLDER, package.name, basePath), file);
