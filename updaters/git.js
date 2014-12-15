@@ -19,7 +19,7 @@ var update = function (package, callback) {
     repo.tags(function(err, tags){
       var versions = _.map(tags, function(tag){ return tag.name});
       var needed = _.filter(versions, function(version){
-        if(version[0] === 'v') {
+        if(version[0] === 'v' || version[0] === 'V') {
           version = version.substr(1);
         }
         if(!cdnjs.checkVersion(package, version)) {
@@ -33,7 +33,7 @@ var update = function (package, callback) {
       }
       async.eachSeries(needed, function (tag, callback) {
           repo.checkout(tag, function () {
-            if(tag[0] === 'v') {
+            if(tag[0] === 'v' || tag[0] === 'V') {
               tag = tag.substr(1);
             }
             var basePath = package.autoupdate.basePath || "";
