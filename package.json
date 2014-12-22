@@ -18,12 +18,12 @@
   "homepage": "https://github.com/cdnjs/autoupdate",
   "dependencies": {
     "async": "^0.9.0",
-    "colors": "^0.6.2",
+    "colors": "^1.0",
     "fs-extra": "^0.9.1",
-    "gift": "^0.4.2",
-    "glob": "^4.0.2",
+    "gift": "^0.5",
+    "glob": "^4.3",
     "lodash": "^2.4.1",
-    "nodegit": "^0.1.4",
+    "nodegit": "^0.2",
     "rimraf": "^2.2.8"
   }
 }
