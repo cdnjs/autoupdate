@@ -15,7 +15,7 @@ for a in `ls`; do mv "$a" "$a.git"; done
 quick update local mirror (in local mirror dir):
 
 ```
-for a in `ls`; do git pull; done
+for a in `ls`; do cd $a && git pull && cd .. ; done
 ```
 
 ## quick transfer libs' target to local mirror (in ajax/libs, sed on freebsd):
