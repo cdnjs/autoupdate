@@ -21,7 +21,7 @@
     "colors": "^1.0",
     "fs-extra": "^0.16",
     "gift": "^0.5",
-    "glob": "^4.3",
+    "glob": "^5",
     "lodash": "~3.5",
     "nodegit": "^0.2.4",
     "rimraf": "^2.2.8"
