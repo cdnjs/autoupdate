@@ -19,7 +19,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "colors": "^1.0",
-    "fs-extra": "^0.16",
+    "fs-extra": "^0.18",
     "gift": "^0.5",
     "glob": "^5",
     "lodash": "~3.6",
