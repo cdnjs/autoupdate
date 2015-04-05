@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 //https://github.com/lodash/lodash/tree/2.4.1
 var _ = require('lodash');
 var fs = require('fs');
