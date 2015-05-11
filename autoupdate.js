@@ -53,7 +53,7 @@ var initialize = function () {
 		})
 		.value();
 
-	async.eachSeries(packages, function (package, callback) {
+	async.eachLimit(packages, 16, function (package, callback) {
 			startAutoUpdate(package, callback);
 
 	}, function () {
