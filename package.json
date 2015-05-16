@@ -22,7 +22,7 @@
     "fs-extra": "^0.18",
     "gift": "^0.6",
     "glob": "^5",
-    "lodash": "~3.6",
+    "lodash": "~3.8",
     "nodegit": "^0.4",
     "rimraf": "^2.2.8"
   }
