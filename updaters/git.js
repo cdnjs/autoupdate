@@ -40,7 +40,7 @@ var update = function (package, callback) {
             var libContentsPath = path.normalize(path.join(TEMP_FOLDER, package.name, basePath));
             var allFiles = [];
             _.each(package.autoupdate.files, function (file){
-               var files = glob.sync(path.normalize(path.join(libContentsPath, file)));
+               var files = glob.sync(path.normalize(path.join(libContentsPath, file)), {nodir:true});
                if(files.length ===0) {
                 console.log('Not found'.red, file.cyan, tag);
                };
