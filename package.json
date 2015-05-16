@@ -20,7 +20,7 @@
     "async": "^0.9.0",
     "colors": "^1.0",
     "fs-extra": "^0.18",
-    "gift": "^0.5",
+    "gift": "^0.6",
     "glob": "^5",
     "lodash": "~3.6",
     "nodegit": "^0.3",
