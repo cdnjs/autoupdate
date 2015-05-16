@@ -23,7 +23,7 @@
     "gift": "^0.6",
     "glob": "^5",
     "lodash": "~3.6",
-    "nodegit": "^0.3",
+    "nodegit": "^0.4",
     "rimraf": "^2.2.8"
   }
 }
