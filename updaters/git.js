@@ -63,10 +63,12 @@ var update = function (package, callback) {
               fs.ensureFile(fileTarget, function(err) {
                 if(err){
                   console.log('Some strange error occured here'.red);
+                  console.dir(err);
                   callback();
                 } else {
                   fs.copy(file, fileTarget, function (err) {
                     if(err){
+                      console.dir(err);
                       console.log('Some strange error occured here'.red);
                       callback();
                     } else {
