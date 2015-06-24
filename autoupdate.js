@@ -43,7 +43,7 @@ var startAutoUpdate = function(package, callback) {
 var initialize = function () {
 	console.log('Starting Auto Update'.cyan)
 	console.log('-----------------------');
-	var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/*/*.json");
+	var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/*/package.json");
 	var packages = _.chain(filenames)
 		.map(function(filename) {
 			return JSON.parse(fs.readFileSync(filename, 'utf8'))
