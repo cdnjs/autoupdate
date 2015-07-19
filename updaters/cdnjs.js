@@ -7,12 +7,12 @@ var getPackagePath = function(pkg, version){
 }
 
 var checkVersion = function(package, version) {
-	var libPath = getPackagePath(package, version);
- 	if(fs.existsSync(libPath)) {
-		return true;
-	} else {
-		return false;
-	}
+  var libPath = getPackagePath(package, version);
+  if(fs.existsSync(libPath)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 
@@ -77,6 +77,6 @@ var processNewVersion = function(pkg, version){
     return errors;
 }*/
 module.exports = {
-	checkVersion: checkVersion,
-	getPackagePath: getPackagePath
+  checkVersion: checkVersion,
+  getPackagePath: getPackagePath
 }
