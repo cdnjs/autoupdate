@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-//https://github.com/lodash/lodash/tree/2.4.1
 var _ = require('lodash');
 var fs = require('fs');
 var colors = require('colors');
@@ -13,8 +12,6 @@ var mkdirp = require('mkdirp');
 var TEMP_FOLDER = config.TEMP_FOLDER;
 
 var gitUpdater = require('./updaters/git')
-
-// Temp
 
 // Check if auto update enabled for library
 var checkAutoUpdate = function(package) {
@@ -34,7 +31,6 @@ var startAutoUpdate = function(package, callback) {
 			gitUpdater.update(package, callback);
 			break;
 		default:
-
 			console.log('Autoupdate type not supportted'.red);
 			callback(null, 0);
 	}
@@ -53,14 +49,11 @@ var initialize = function (err) {
 				return typeof package.autoupdate === 'object';
 			})
 			.value();
-
 		async.eachLimit(packages, 16, function (package, callback) {
 				startAutoUpdate(package, callback);
-
 		}, function () {
 			console.log('\n');
 			console.log('-----------------------');
-
 			console.log('Auto Update Completed'.green)
 		});
 	} else {
