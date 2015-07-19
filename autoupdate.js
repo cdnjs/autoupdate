@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 
-var _ = require('lodash');
-var fs = require('fs');
-var colors = require('colors');
-var async = require('async');
-var config = require('./config');
-var rimraf = require('rimraf');
-var glob = require('glob');
-var _ = require('lodash');
-var mkdirp = require('mkdirp');
-var TEMP_FOLDER = config.TEMP_FOLDER;
-
-var gitUpdater = require('./updaters/git')
+var _ = require('lodash'),
+  fs = require('fs'),
+  colors = require('colors'),
+  async = require('async'),
+  config = require('./config'),
+  rimraf = require('rimraf'),
+  glob = require('glob'),
+  _ = require('lodash'),
+  mkdirp = require('mkdirp'),
+  TEMP_FOLDER = config.TEMP_FOLDER,
+  gitUpdater = require('./updaters/git');
 
 // Check if auto update enabled for library
 var checkAutoUpdate = function(package) {

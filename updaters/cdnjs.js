@@ -1,6 +1,6 @@
-var fs = require('fs');
-var config = require('../config');
-var path = require('path');
+var fs = require('fs'),
+  config = require('../config'),
+  path = require('path');
 
 var getPackagePath = function(pkg, version){
     return path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', pkg.name, version));

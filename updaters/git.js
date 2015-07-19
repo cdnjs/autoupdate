@@ -1,13 +1,13 @@
 
-var config = require('../config');
-var TEMP_FOLDER = config.TEMP_FOLDER;
-var git = require('gift');
-var async = require('async');
-var _ = require('lodash');
-var path = require('path');
-var glob = require('glob');
-var cdnjs = require('./cdnjs');
-var fs = require('fs-extra');
+var config = require('../config'),
+  TEMP_FOLDER = config.TEMP_FOLDER,
+  git = require('gift'),
+  async = require('async'),
+  _ = require('lodash'),
+  path = require('path'),
+  glob = require('glob'),
+  cdnjs = require('./cdnjs'),
+  fs = require('fs-extra');
 
 var update = function (package, callback) {
   var target = package.autoupdate.target;
@@ -36,9 +36,9 @@ var update = function (package, callback) {
             if(tag[0] === 'v' || tag[0] === 'V') {
               tag = tag.substr(1);
             }
-            var basePath = package.autoupdate.basePath || "";
-            var libContentsPath = path.normalize(path.join(TEMP_FOLDER, package.name, basePath));
-            var allFiles = [];
+            var basePath = package.autoupdate.basePath || "",
+              libContentsPath = path.normalize(path.join(TEMP_FOLDER, package.name, basePath)),
+               allFiles = [];
             _.each(package.autoupdate.files, function (file){
                var files = glob.sync(path.normalize(path.join(libContentsPath, file)), {nodir:true});
                if(files.length ===0) {
@@ -52,14 +52,14 @@ var update = function (package, callback) {
 
             if(allFiles.length !==0){
               console.log('Updated package.json to version'.green, tag);
-              var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json'));
-              var packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+              var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json')),
+                packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
               packageJSON.version = tag;
               fs.writeFileSync(packagePath, JSON.stringify(packageJSON, undefined, 2)  + '\n');
             } 
             async.eachSeries(allFiles, function(file, callback){
-              var fileName = path.relative(path.join(TEMP_FOLDER, package.name, basePath), file);
-              var fileTarget = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, tag, fileName));
+              var fileName = path.relative(path.join(TEMP_FOLDER, package.name, basePath), file),
+                fileTarget = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, tag, fileName));
               fs.ensureFile(fileTarget, function(err) {
                 if(err){
                   console.log('Some strange error occured here'.red);
