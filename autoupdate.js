@@ -60,5 +60,5 @@ var initialize = function (err) {
   }
 }
 
-rimraf.sync(TEMP_FOLDER);
+rimraf.sync(TEMP_FOLDER + '/*');
 mkdirp(TEMP_FOLDER, initialize);
