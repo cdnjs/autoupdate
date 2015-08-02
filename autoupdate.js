@@ -5,7 +5,6 @@ var _ = require('lodash'),
   colors = require('colors'),
   async = require('async'),
   config = require('./config'),
-  rimraf = require('rimraf'),
   glob = require('glob'),
   _ = require('lodash'),
   TEMP_FOLDER = config.TEMP_FOLDER,
@@ -59,5 +58,5 @@ var initialize = function (err) {
   }
 }
 
-rimraf.sync(TEMP_FOLDER + '/*');
+fs.removeSync(TEMP_FOLDER + '/*');
 fs.mkdirp(TEMP_FOLDER, initialize);
