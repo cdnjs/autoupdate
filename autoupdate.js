@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var _ = require('lodash'),
-  fs = require('fs'),
+  fs = require('fs-extra'),
   colors = require('colors'),
   async = require('async'),
   config = require('./config'),
