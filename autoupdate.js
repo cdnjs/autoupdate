@@ -8,7 +8,6 @@ var _ = require('lodash'),
   rimraf = require('rimraf'),
   glob = require('glob'),
   _ = require('lodash'),
-  mkdirp = require('mkdirp'),
   TEMP_FOLDER = config.TEMP_FOLDER,
   gitUpdater = require('./updaters/git');
 
@@ -61,4 +60,4 @@ var initialize = function (err) {
 }
 
 rimraf.sync(TEMP_FOLDER + '/*');
-mkdirp(TEMP_FOLDER, initialize);
+fs.mkdirp(TEMP_FOLDER, initialize);
