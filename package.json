@@ -24,6 +24,7 @@
     "glob": "^5",
     "lodash": "~3.10.0",
     "nodegit": "^0.4",
+    "semver": "^5.0.1",
     "semver-stable": "^2.0.3"
   }
 }
