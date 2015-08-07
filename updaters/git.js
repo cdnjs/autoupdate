@@ -84,6 +84,7 @@ var update = function (package, callback) {
 
       }, function () {
         console.log('Updated from Git'.green);
+        fs.removeSync(TEMP_FOLDER + package.name);
         callback(null, 1);
       });
     })
