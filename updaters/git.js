@@ -8,7 +8,8 @@ var config = require('../config'),
   glob = require('glob'),
   cdnjs = require('./cdnjs'),
   fs = require('fs-extra'),
-  stable = require('semver-stable');
+  stable = require('semver-stable'),
+  semver = require('semver');
 
 var update = function (package, callback) {
   var target = package.autoupdate.target;
@@ -51,7 +52,7 @@ var update = function (package, callback) {
             console.log('All files for this version', allFiles.length);
               console.log(allFiles.length, allFiles.length !==0)
 
-            if(allFiles.length !==0 && stable.is(tag)){
+            if(allFiles.length !==0 && stable.is(tag) && semver.gt(tag, package.version)){
               console.log('Updated package.json to version'.green, tag);
               var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json')),
                 packageJSON = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
