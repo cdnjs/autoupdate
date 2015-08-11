@@ -19,12 +19,12 @@
   "dependencies": {
     "async": "^1.0.0",
     "colors": "^1.0",
+    "compare-versions": "^1.1.2",
     "fs-extra": "^0.23.0",
     "gift": "^0.6",
     "glob": "^5",
     "lodash": "~3.10.0",
     "nodegit": "^0.4",
-    "semver": "^5.0.1",
     "semver-stable": "^2.0.4"
   }
 }
