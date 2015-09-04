@@ -45,6 +45,7 @@ var update = function (package, callback) {
                var files = glob.sync(path.normalize(path.join(libContentsPath, file)), {nodir:true});
                if(files.length ===0) {
                 console.log('Not found'.red, file.cyan, tag);
+                fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, tag)));
                };
                allFiles = allFiles.concat(files);
 
