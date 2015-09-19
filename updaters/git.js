@@ -42,7 +42,7 @@ var update = function (package, callback) {
               libContentsPath = path.normalize(path.join(TEMP_FOLDER, package.name, basePath)),
                allFiles = [];
             _.each(package.autoupdate.files, function (file){
-               var files = glob.sync(path.normalize(path.join(libContentsPath, file)), {nodir:true});
+               var files = glob.sync(path.normalize(path.join(libContentsPath, file)), {nodir:true, realpath:true});
                if(files.length ===0) {
                 console.log('Not found'.red, file.cyan, tag);
                 fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, tag)));
