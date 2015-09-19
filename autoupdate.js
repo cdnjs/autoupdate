@@ -46,7 +46,7 @@ var initialize = function (err) {
         return typeof package.autoupdate === 'object';
       })
       .value();
-    async.eachLimit(packages, 16, function (package, callback) {
+    async.eachLimit(packages, 8, function (package, callback) {
         startAutoUpdate(package, callback);
     }, function () {
       console.log('\n');
