@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/cdnjs/autoupdate",
   "dependencies": {
-    "async": "^1.0.0",
-    "colors": "^1.0",
+    "async": "^1.4.2",
+    "colors": "^1.1",
     "compare-versions": "^1.1.2",
     "fs-extra": "^0.24.0",
     "gift": "^0.6",
     "glob": "^5",
-    "lodash": "~3.10.0",
+    "lodash": "~3.10.1",
     "nodegit": "^0.4",
     "semver-stable": "^2.0.4"
   }
