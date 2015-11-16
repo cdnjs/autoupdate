@@ -21,8 +21,8 @@
     "colors": "^1.1",
     "compare-versions": "^2.0.1",
     "fs-extra": "^0.26.0",
-    "gift": "^0.6",
-    "glob": "^5",
+    "gift": "^0.7",
+    "glob": "^6",
     "lodash": "~3.10.1",
     "nodegit": "^0.5",
     "semver-stable": "^2.0.4"
