@@ -52,6 +52,7 @@ var update = function (package, callback) {
             });
             console.log('All files for this version', allFiles.length);
               console.log(allFiles.length, allFiles.length !==0)
+            package.version = package.version || "0.0.0";
             if(allFiles.length !==0 && stable.is(tag) && compareVersions(tag, package.version) > 0){
               console.log('Updated package.json to version'.green, tag);
               var packagePath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, 'package.json')),
