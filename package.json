@@ -23,7 +23,7 @@
     "fs-extra": "^0.26.0",
     "gift": "^0.7",
     "glob": "^7",
-    "lodash": "~3.10.1",
+    "lodash": "~4.11.1",
     "nodegit": "^0.11",
     "semver-stable": "^2.0.4"
   }
