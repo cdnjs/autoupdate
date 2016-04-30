@@ -24,7 +24,7 @@
     "gift": "^0.7",
     "glob": "^7",
     "lodash": "~4.11.1",
-    "nodegit": "^0.11",
+    "nodegit": "^0.12",
     "semver-stable": "^2.0.4"
   }
 }
