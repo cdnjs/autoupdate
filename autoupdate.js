@@ -1,62 +1,51 @@
 #!/usr/bin/env node
 
-var _ = require('lodash'),
-  fs = require('fs-extra'),
-  colors = require('colors'),
-  async = require('async'),
-  config = require('./config'),
-  glob = require('glob'),
-  _ = require('lodash'),
-  TEMP_FOLDER = config.TEMP_FOLDER,
-  gitUpdater = require('./updaters/git');
+var _ = require('lodash');
+var fs = require('fs-extra');
+var async = require('async');
+var config = require('./config');
+var glob = require('glob');
+var TEMP_FOLDER = config.TEMP_FOLDER;
+var gitUpdater = require('./updaters/git');
 
-// Check if auto update enabled for library
-var checkAutoUpdate = function(package) {
-  if(typeof package.autoupdate === 'object') {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-var startAutoUpdate = function(package, callback) {
+var startAutoUpdate = function(library, callback) {
   console.log('\n');
-  console.log(package.name.yellow)
-  var source = package.autoupdate.source;
+  console.log(library.name.yellow);
+  var source = library.autoupdate.source;
   switch (source) {
-    case 'git': 
-      gitUpdater.update(package, callback);
+    case 'git':
+      gitUpdater.update(library, callback);
       break;
     default:
       console.log('Autoupdate type not supportted'.red);
       callback(null, 0);
   }
-}
+};
 
-var initialize = function (err) {
-  if (!err) {
-    console.log('Starting Auto Update'.cyan)
+var initialize = function(err) {
+  if (err) {
+    console.error("Got an error: " + err);
+  } else {
+    console.log('Starting Auto Update'.cyan);
     console.log('-----------------------');
-    var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/*/package.json");
-    var packages = _.chain(filenames)
+    var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/*/library.json");
+    var librarys = _.chain(filenames)
       .map(function(filename) {
-        return JSON.parse(fs.readFileSync(filename, 'utf8'))
+        return JSON.parse(fs.readFileSync(filename, 'utf8'));
       })
-      .filter(function(package) {
-        return typeof package.autoupdate === 'object';
+      .filter(function(library) {
+        return typeof library.autoupdate === 'object';
       })
       .value();
-    async.eachLimit(packages, 8, function (package, callback) {
-        startAutoUpdate(package, callback);
-    }, function () {
+    async.eachLimit(librarys, 8, function(library, callback) {
+      startAutoUpdate(library, callback);
+    }, function() {
       console.log('\n');
       console.log('-----------------------');
-      console.log('Auto Update Completed'.green)
+      console.log('Auto Update Completed'.green);
     });
-  } else {
-    console.error("Got an error: " + err);
   }
-}
+};
 
 fs.removeSync(TEMP_FOLDER + '/*');
 fs.mkdirp(TEMP_FOLDER, initialize);
