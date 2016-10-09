@@ -28,7 +28,7 @@ var initialize = function(err) {
   } else {
     console.log('Starting Auto Update'.cyan);
     console.log('-----------------------');
-    var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/*/library.json");
+    var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/*/package.json");
     var librarys = _.chain(filenames)
       .map(function(filename) {
         return JSON.parse(fs.readFileSync(filename, 'utf8'));

@@ -10,6 +10,7 @@ var cdnjs = require('./cdnjs');
 var fs = require('fs-extra');
 var stable = require('semver-stable');
 var compareVersions = require('compare-versions');
+var colors = require('colors');
 
 var update = function(library, callback) {
   var target = library.autoupdate.target;
@@ -55,8 +56,8 @@ var update = function(library, callback) {
           console.log(allFiles.length, allFiles.length !== 0);
           library.version = library.version || "0.0.0";
           if (allFiles.length !== 0 && stable.is(tag) && compareVersions(tag, library.version) > 0) {
-            console.log('Updated library.json to version'.green, tag);
-            var libraryPath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, 'library.json'));
+            console.log('Updated package.json to version'.green, tag);
+            var libraryPath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, 'package.json'));
             var libraryJSON = JSON.parse(fs.readFileSync(libraryPath, 'utf8'));
             libraryJSON.version = tag;
             fs.writeFileSync(libraryPath, JSON.stringify(libraryJSON, undefined, 2) + '\n');
