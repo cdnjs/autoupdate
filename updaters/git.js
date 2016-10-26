@@ -44,25 +44,6 @@ var update = function(library, callback) {
           var libContentsPath = path.normalize(path.join(TEMP_FOLDER, library.name, basePath));
           var allFiles = [];
 
-          // Handle the old `files` config
-          _.each(library.autoupdate.files, function(file) {
-            var files = glob.sync(path.normalize(path.join(libContentsPath, file)), {
-                nodir: true,
-                realpath: true
-            });
-            if (files.length === 0) {
-              console.log('Not found (using `files`)'.red, file.cyan, tag);
-              fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag)));
-            }
-            allFiles = allFiles.concat(files.map(function (c) {
-                 return {
-                     _: c,
-                     basePath: basePath
-                 }
-             }));
-          });
-
-          // Support for multiple maps
           _.each(library.autoupdate.fileMap, function(mapGroup) {
              var cBasePath = mapGroup.basePath || "",
                  files = [];
@@ -128,3 +109,4 @@ var update = function(library, callback) {
 module.exports = {
   update: update
 };
+
