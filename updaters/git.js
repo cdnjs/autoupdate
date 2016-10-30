@@ -53,7 +53,7 @@ var update = function(library, callback) {
                  files = files.concat(newFiles);
                  if (newFiles.length === 0) {
                   console.log('Not found (using `autoupdate.fileMap`)'.red, cRule.cyan, tag);
-                  fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', package.name, tag)));
+                  fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', lib.name, tag)));
                  }
              });
              allFiles = allFiles.concat(files.map(function (c) {
