@@ -9,7 +9,7 @@ var glob = require('glob');
 var cdnjs = require('./cdnjs');
 var fs = require('fs-extra');
 var stable = require('semver-stable');
-var semver = require('semver');
+var compareVersions = require('compare-versions');
 var colors = require('colors');
 
 var update = function(library, callback) {
@@ -71,7 +71,7 @@ var update = function(library, callback) {
             (
               (!library.version) ||
               (
-                semver.gt(tag, library.version) &&
+                (compareVersions(tag, library.version) > 0) &&
                 (
                   (stable.is(tag)) ||
                   (!stable.is(tag) && !stable.is(library.version))
