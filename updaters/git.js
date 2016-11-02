@@ -43,14 +43,25 @@ var update = function(library, callback) {
           var basePath = library.autoupdate.basePath || "";
           var libContentsPath = path.normalize(path.join(TEMP_FOLDER, library.name, basePath));
           var allFiles = [];
-          _.each(library.autoupdate.files, function(file) {
-            var files = glob.sync(path.normalize(path.join(libContentsPath, file)),
-              {nodir: true, realpath: true});
-            if (files.length === 0) {
-              console.log('Not found'.red, file.cyan, tag);
-              fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag)));
-            }
-            allFiles = allFiles.concat(files);
+
+          _.each(library.autoupdate.fileMap, function(mapGroup) {
+             var cBasePath = mapGroup.basePath || "",
+                 files = [];
+             libContentsPath = path.normalize(path.join(TEMP_FOLDER, library.name, cBasePath)),
+             _.each(mapGroup.files, function (cRule) {
+                 var newFiles = glob.sync(path.normalize(path.join(libContentsPath, cRule)), {nodir: true, realpath: true});
+                 files = files.concat(newFiles);
+                 if (newFiles.length === 0) {
+                  console.log('Not found (using `autoupdate.fileMap`)'.red, cRule.cyan, tag);
+                  fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag)));
+                 }
+             });
+             allFiles = allFiles.concat(files.map(function (c) {
+                 return {
+                     _: c,
+                     basePath: cBasePath
+                 }
+             }));
           });
           console.log('All files for this version', allFiles.length);
           console.log(allFiles.length, allFiles.length !== 0);
@@ -75,7 +86,7 @@ var update = function(library, callback) {
             fs.writeFileSync(libraryPath, JSON.stringify(libraryJSON, undefined, 2) + '\n');
           }
           async.eachSeries(allFiles, function(file, callback) {
-            var fileName = path.relative(path.join(TEMP_FOLDER, library.name, basePath), file);
+            var fileName = path.relative(path.join(TEMP_FOLDER, library.name, file.basePath), file._);
             var fileTarget = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag, fileName));
             fs.ensureFile(fileTarget, function(err) {
               if (err) {
@@ -83,7 +94,7 @@ var update = function(library, callback) {
                 console.dir(err);
                 callback();
               } else {
-                fs.copy(file, fileTarget, function(err) {
+                fs.copy(file._, fileTarget, function(err) {
                   if (err) {
                     console.dir(err);
                     console.log('Some strange error occured here'.red);
@@ -110,3 +121,4 @@ var update = function(library, callback) {
 module.exports = {
   update: update
 };
+
