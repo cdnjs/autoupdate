@@ -5,7 +5,6 @@ var fs = require('fs-extra');
 var async = require('async');
 var config = require('./config');
 var glob = require('glob');
-var TEMP_FOLDER = config.TEMP_FOLDER;
 var gitUpdater = require('./updaters/git');
 
 var startAutoUpdate = function(library, callback) {
@@ -49,5 +48,4 @@ var initialize = function(err) {
   }
 };
 
-fs.removeSync(TEMP_FOLDER + '/*');
-fs.mkdirp(TEMP_FOLDER, initialize);
+initialize();
