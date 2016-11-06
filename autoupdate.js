@@ -5,6 +5,7 @@ var fs = require('fs-extra');
 var async = require('async');
 var config = require('./config');
 var glob = require('glob');
+var GIT_REPO_LOCAL_FOLDER = config.GIT_REPO_LOCAL_FOLDER;
 var gitUpdater = require('./updaters/git');
 
 var startAutoUpdate = function(library, callback) {
@@ -48,4 +49,5 @@ var initialize = function(err) {
   }
 };
 
+fs.mkdirpSync(GIT_REPO_LOCAL_FOLDER);
 initialize();
