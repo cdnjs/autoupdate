@@ -56,7 +56,7 @@ var update = function(library, callback) {
             return (!cdnjs.checkVersion(library, version) && /\d+/.test(version));
           });
           if (needed.length > 0) {
-            console.log(library.name, 'needs versions:', needed.join(',').blue);
+            console.log(library.name, 'needs versions:', needed.join(', ').blue);
           }
           async.eachSeries(needed, function(tag, callback) {
             repo.checkout(tag, function() {
