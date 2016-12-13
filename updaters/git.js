@@ -15,7 +15,7 @@ var isThere = require('is-there');
 
 var update = function(library, callback) {
   var target = library.autoupdate.target;
-  var localTarget = path.normalize(path.join(GIT_REPO_LOCAL_FOLDER, library.name));
+  var localTarget = path.normalize(path.join(__dirname, '../', GIT_REPO_LOCAL_FOLDER, library.name));
   async.series([
     function(next) {
       if (!isThere(localTarget)) {

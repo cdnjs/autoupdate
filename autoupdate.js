@@ -4,6 +4,7 @@ var _ = require('lodash');
 var fs = require('fs-extra');
 var async = require('async');
 var config = require('./config');
+var path = require('path');
 var glob = require('glob');
 var GIT_REPO_LOCAL_FOLDER = config.GIT_REPO_LOCAL_FOLDER;
 var gitUpdater = require('./updaters/git');
@@ -30,7 +31,7 @@ var initialize = function(err) {
     console.log('-----------------------');
     var args = process.argv.slice(2);
     var globPattern = (args.length === 1) ? args[0] : '*';
-    var filenames = glob.sync(__dirname + "/../cdnjs/ajax/libs/" + globPattern + "/package.json");
+    var filenames = glob.sync(path.normalize(path.join(__dirname, config.CDNJS_FOLDER, "/ajax/libs/" + globPattern + "/package.json")));
     var librarys = _.chain(filenames)
       .map(function(filename) {
         return JSON.parse(fs.readFileSync(filename, 'utf8'));
