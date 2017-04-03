@@ -129,6 +129,7 @@ var update = function(library, callback) {
                         console.log('Some strange error occured here'.red);
                         callback();
                       } else {
+                        fs.chmodSync(fileTarget, '0644');
                         callback();
                       }
                     });
