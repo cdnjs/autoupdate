@@ -27,5 +27,8 @@
     "lodash": "^4.17.4",
     "nodegit": "^0.20",
     "semver-stable": "^2.0.4"
+  },
+  "engines": {
+    "node": "^8"
   }
 }
