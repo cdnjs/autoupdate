@@ -15,7 +15,9 @@ var isThere = require('is-there');
 
 var update = function (library, callback) {
   var target = library.autoupdate.target;
-  var localTarget = path.normalize(path.join(__dirname, '../', GIT_REPO_LOCAL_FOLDER, library.name));
+  var localTarget = path.normalize(path.join(
+    __dirname, '../', GIT_REPO_LOCAL_FOLDER, library.name
+  ));
   async.series([
     function (next) {
       if (!isThere(localTarget)) {
@@ -54,8 +56,10 @@ var update = function (library, callback) {
           });
 
           var needed = _.filter(versions, function (version) {
-            if ((version[0] === 'v' || version[0] === 'V' || version[0] === 'r') && version.length > 1 && !isNaN(version[1])) {
-              version = version.substr(1);
+            if (version[0] === 'v' || version[0] === 'V' || version[0] === 'r') {
+              if (version.length > 1 && !isNaN(version[1])) {
+                version = version.substr(1);
+              }
             }
 
             return (!cdnjs.checkVersion(library, version) && /\d+/.test(version));
@@ -67,8 +71,10 @@ var update = function (library, callback) {
 
           async.eachSeries(needed, function (tag, callback) {
             repo.checkout(tag, function () {
-              if ((tag[0] === 'v' || tag[0] === 'V' || tag[0] === 'r') && tag.length > 1 && !isNaN(tag[1])) {
-                tag = tag.substr(1);
+              if (tag[0] === 'v' || tag[0] === 'V' || tag[0] === 'r') {
+                if (tag.length > 1 && !isNaN(tag[1])) {
+                  tag = tag.substr(1);
+                }
               }
 
               var basePath = library.autoupdate.basePath || '';
@@ -76,15 +82,20 @@ var update = function (library, callback) {
               var allFiles = [];
 
               _.each(library.autoupdate.fileMap, function (mapGroup) {
-                var cBasePath = mapGroup.basePath || '',
-                    files = [];
+                var cBasePath = mapGroup.basePath || '';
+                var files = [];
                 libContentsPath = path.normalize(path.join(localTarget, cBasePath)),
                 _.each(mapGroup.files, function (cRule) {
-                    var newFiles = glob.sync(path.normalize(path.join(libContentsPath, cRule)), { nodir: true, realpath: true });
+                    var newFiles = glob.sync(path.normalize(
+                      path.join(libContentsPath, cRule)),
+                      { nodir: true, realpath: true }
+                    );
                     files = files.concat(newFiles);
                     if (newFiles.length === 0) {
                       console.log('Not found'.red, cRule.cyan, tag);
-                      fs.mkdirsSync(path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag)));
+                      fs.mkdirsSync(path.normalize(path.join(
+                        __dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag
+                      )));
                     }
                   });
 
@@ -120,7 +131,9 @@ var update = function (library, callback) {
                 )
               ) {
                 console.log('Updated package.json to version'.green, tag);
-                var libraryPath = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, 'package.json'));
+                var libraryPath = path.normalize(path.join(
+                  __dirname, '../../cdnjs', 'ajax', 'libs', library.name, 'package.json'
+                ));
                 var libraryJSON = JSON.parse(fs.readFileSync(libraryPath, 'utf8'));
                 libraryJSON.version = tag;
                 fs.writeFileSync(libraryPath, JSON.stringify(libraryJSON, undefined, 2) + '\n');
@@ -128,7 +141,9 @@ var update = function (library, callback) {
 
               async.each(allFiles, function (file, callback) {
                 var fileName = path.relative(path.join(localTarget, file.basePath), file._);
-                var fileTarget = path.normalize(path.join(__dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag, fileName));
+                var fileTarget = path.normalize(path.join(
+                  __dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag, fileName
+                ));
                 fs.ensureFile(fileTarget, function (err) {
                   if (err) {
                     console.log('Some strange error occured here'.red);

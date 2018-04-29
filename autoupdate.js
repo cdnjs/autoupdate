@@ -31,7 +31,9 @@ var initialize = function (err) {
     console.log('-----------------------');
     var args = process.argv.slice(2);
     var globPattern = (args.length === 1) ? args[0] : '*';
-    var filenames = glob.sync(path.normalize(path.join(__dirname, config.CDNJS_FOLDER, '/ajax/libs/' + globPattern + '/package.json')));
+    var filenames = glob.sync(path.normalize(path.join(
+      __dirname, config.CDNJS_FOLDER, '/ajax/libs/' + globPattern + '/package.json'
+    )));
     var librarys = _.chain(filenames)
       .map(function (filename) {
         return JSON.parse(fs.readFileSync(filename, 'utf8'));
