@@ -9,7 +9,7 @@ var glob = require('glob');
 var GIT_REPO_LOCAL_FOLDER = config.GIT_REPO_LOCAL_FOLDER;
 var gitUpdater = require('./updaters/git');
 
-var startAutoUpdate = function(library, callback) {
+var startAutoUpdate = function (library, callback) {
   console.log('\n');
   console.log(library.name.yellow);
   var source = library.autoupdate.source;
@@ -23,26 +23,27 @@ var startAutoUpdate = function(library, callback) {
   }
 };
 
-var initialize = function(err) {
+var initialize = function (err) {
   if (err) {
-    console.error("Got an error: " + err);
+    console.error('Got an error: ' + err);
   } else {
     console.log('Starting Auto Update'.cyan);
     console.log('-----------------------');
     var args = process.argv.slice(2);
     var globPattern = (args.length === 1) ? args[0] : '*';
-    var filenames = glob.sync(path.normalize(path.join(__dirname, config.CDNJS_FOLDER, "/ajax/libs/" + globPattern + "/package.json")));
+    var filenames = glob.sync(path.normalize(path.join(__dirname, config.CDNJS_FOLDER, '/ajax/libs/' + globPattern + '/package.json')));
     var librarys = _.chain(filenames)
-      .map(function(filename) {
+      .map(function (filename) {
         return JSON.parse(fs.readFileSync(filename, 'utf8'));
       })
-      .filter(function(library) {
+      .filter(function (library) {
         return typeof library.autoupdate === 'object';
       })
       .value();
-    async.eachLimit(librarys, 8, function(library, callback) {
+    async.eachLimit(librarys, 8, function (library, callback) {
       startAutoUpdate(library, callback);
-    }, function() {
+    }, function () {
+
       console.log('\n');
       console.log('-----------------------');
       console.log('Auto Update Completed'.green);
