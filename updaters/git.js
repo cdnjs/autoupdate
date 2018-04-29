@@ -181,4 +181,3 @@ var update = function (library, callback) {
 module.exports = {
   update: update
 };
-
