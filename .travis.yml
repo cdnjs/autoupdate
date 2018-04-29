@@ -5,6 +5,10 @@ dist: trusty
 node_js:
   - "8"
 
+cache:
+  directories:
+    - node_modules
+
 git:
   depth: 10
 
