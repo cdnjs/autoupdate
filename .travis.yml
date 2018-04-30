@@ -18,7 +18,7 @@ jobs:
       env:
         - test: Editor Config check
       script:
-      - echint verbose $(git ls-files)
+      - echint --verbose $(git ls-files)
     - stage: Static Test
       env:
         - test: jscs coding style check
