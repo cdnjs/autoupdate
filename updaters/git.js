@@ -13,6 +13,16 @@ var compareVersions = require('compare-versions');
 var colors = require('colors');
 var isThere = require('is-there');
 
+function hasVersionPrefix(version) {
+  if (version[0] !== 'v' && version[0] !== 'V' || version[0] !== 'r') {
+    return false;
+  } else if (version.length > 1 && !isNaN(version[1])) {
+    return true;
+  }
+
+  return false;
+}
+
 var update = function (library, callback) {
   var target = library.autoupdate.target;
   var localTarget = path.normalize(path.join(
@@ -56,10 +66,8 @@ var update = function (library, callback) {
           });
 
           var needed = _.filter(versions, function (version) {
-            if (version[0] === 'v' || version[0] === 'V' || version[0] === 'r') {
-              if (version.length > 1 && !isNaN(version[1])) {
-                version = version.substr(1);
-              }
+            if (hasVersionPrefix(version)) {
+              version = version.substr(1);
             }
 
             return (!cdnjs.checkVersion(library, version) && /\d+/.test(version));
@@ -71,10 +79,8 @@ var update = function (library, callback) {
 
           async.eachSeries(needed, function (tag, callback) {
             repo.checkout(tag, function () {
-              if (tag[0] === 'v' || tag[0] === 'V' || tag[0] === 'r') {
-                if (tag.length > 1 && !isNaN(tag[1])) {
-                  tag = tag.substr(1);
-                }
+              if (hasVersionPrefix(tag)) {
+                tag = tag.substr(1);
               }
 
               var basePath = library.autoupdate.basePath || '';
