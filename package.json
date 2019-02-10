@@ -28,7 +28,7 @@
     "semver-stable": "^2.0.4"
   },
   "engines": {
-    "node": "^8"
+    "node": "^10"
   },
   "devDependencies": {
     "echint": "^4.0.1",
