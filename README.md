@@ -3,7 +3,7 @@ autoupdate
 
 cdnjs library autoupdate module
 
-[![Build Status](https://travis-ci.org/cdnjs/autoupdate.svg?branch=master)](https://travis-ci.org/cdnjs/autoupdate) [![Code Climate](https://codeclimate.com/github/cdnjs/autoupdate/badges/gpa.svg)](https://codeclimate.com/github/cdnjs/autoupdate) [![Dependency Status](https://david-dm.org/cdnjs/autoupdate.svg?theme=shields.io)](https://david-dm.org/cdnjs/autoupdate) [![PR Stats](http://www.issuestats.com/github/cdnjs/autoupdate/badge/pr?style=flat)](http://www.issuestats.com/github/cdnjs/autoupdate) [![Issue Stats](http://www.issuestats.com/github/cdnjs/autoupdate/badge/issue?style=flat)](http://www.issuestats.com/github/cdnjs/autoupdate)
+[![Build Status](https://travis-ci.org/cdnjs/autoupdate.svg?branch=master)](https://travis-ci.org/cdnjs/autoupdate) [![Code Climate](https://codeclimate.com/github/cdnjs/autoupdate/badges/gpa.svg)](https://codeclimate.com/github/cdnjs/autoupdate) [![Dependency Status](https://david-dm.org/cdnjs/autoupdate.svg?theme=shields.io)](https://david-dm.org/cdnjs/autoupdate)
 
 ## Supported auto-update mechanism
   * git
