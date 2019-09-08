@@ -78,7 +78,7 @@ var update = function (library, callback) {
           }
 
           async.eachSeries(needed, function (tag, callback) {
-            repo.checkout(tag, function () {
+            repo.checkout(tag, { force: true }, function () {
               if (hasVersionPrefix(tag)) {
                 tag = tag.substr(1);
               }
