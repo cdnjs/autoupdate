@@ -9,6 +9,12 @@ var glob = require('glob');
 var GIT_REPO_LOCAL_FOLDER = config.GIT_REPO_LOCAL_FOLDER;
 var gitUpdater = require('./updaters/git');
 
+if (process.env.AUTOUPDATE_CONCURRENT_LIMIT === undefined) {
+  throw 'AUTOUPDATE_CONCURRENT_LIMIT is missing';
+}
+
+var asyncLimit = parseInt(process.env.AUTOUPDATE_CONCURRENT_LIMIT);
+
 var startAutoUpdate = function (library, callback) {
   console.log('\n');
   console.log(library.name.yellow);
@@ -42,7 +48,7 @@ var initialize = function (err) {
         return typeof library.autoupdate === 'object';
       })
       .value();
-    async.eachLimit(librarys, 8, function (library, callback) {
+    async.eachLimit(librarys, asyncLimit, function (library, callback) {
       startAutoUpdate(library, callback);
     }, function () {
 
