@@ -49,16 +49,16 @@ var update = function (library, callback) {
       console.log('Use', localTarget, 'as source of', library.name);
       repo.remote_fetch('origin', function (err) {
         if (err) {
-          console.dir(err);
+          console.log(err);
           console.log(library.name, 'git repo fetch failed');
-          next();
+          return next();
         }
 
         repo.tags(function (err, tags) {
           if (err) {
             console.log(library.name, 'git tag handle failed');
-            console.dir(err);
-            next();
+            console.log(err);
+            return next();
           }
 
           var versions = _.map(tags, function (tag) {

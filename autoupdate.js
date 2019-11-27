@@ -14,6 +14,7 @@ if (process.env.AUTOUPDATE_CONCURRENT_LIMIT === undefined) {
 }
 
 var asyncLimit = parseInt(process.env.AUTOUPDATE_CONCURRENT_LIMIT);
+console.log("AUTOUPDATE_CONCURRENT_LIMIT is", asyncLimit);
 
 var startAutoUpdate = function (library, callback) {
   console.log('\n');
