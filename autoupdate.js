@@ -14,7 +14,6 @@ if (process.env.AUTOUPDATE_CONCURRENT_LIMIT === undefined) {
 }
 
 var asyncLimit = parseInt(process.env.AUTOUPDATE_CONCURRENT_LIMIT);
-console.log("AUTOUPDATE_CONCURRENT_LIMIT is", asyncLimit);
 
 var startAutoUpdate = function (library, callback) {
   console.log('\n');
@@ -62,3 +61,7 @@ var initialize = function (err) {
 
 fs.mkdirpSync(GIT_REPO_LOCAL_FOLDER);
 initialize();
+
+process.on('uncaughtException', (err) => {
+  console.log(err);
+});
