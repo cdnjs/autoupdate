@@ -12,6 +12,11 @@ var compareVersions = require('compare-versions');
 var colors = require('colors');
 var isThere = require('is-there');
 
+if (process.env.BOT_BASE_PATH === undefined) {
+  throw 'BOT_BASE_PATH is missing';
+}
+const BOT_BASE_PATH = process.env.BOT_BASE_PATH;
+
 function hasVersionPrefix(version) {
   if (version[0] !== 'v' && version[0] !== 'V' && version[0] !== 'r') {
     return false;
@@ -99,7 +104,7 @@ var update = function (library, callback) {
                     if (newFiles.length === 0) {
                       console.log('Not found'.red, cRule.cyan, tag);
                       fs.mkdirsSync(path.normalize(path.join(
-                        __dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag
+                        BOT_BASE_PATH, "cdnjs", 'ajax', 'libs', library.name, tag
                       )));
                     }
                   });
@@ -137,7 +142,7 @@ var update = function (library, callback) {
               ) {
                 console.log('Updated package.json to version'.green, tag);
                 var libraryPath = path.normalize(path.join(
-                  __dirname, '../../cdnjs', 'ajax', 'libs', library.name, 'package.json'
+                  BOT_BASE_PATH, "cdnjs", 'ajax', 'libs', library.name, 'package.json'
                 ));
                 var libraryJSON = JSON.parse(fs.readFileSync(libraryPath, 'utf8'));
                 libraryJSON.version = tag;
@@ -147,7 +152,7 @@ var update = function (library, callback) {
               async.each(allFiles, function (file, callback) {
                 var fileName = path.relative(path.join(localTarget, file.basePath), file._);
                 var fileTarget = path.normalize(path.join(
-                  __dirname, '../../cdnjs', 'ajax', 'libs', library.name, tag, fileName
+                  BOT_BASE_PATH, "cdnjs", 'ajax', 'libs', library.name, tag, fileName
                 ));
                 fs.ensureFile(fileTarget, function (err) {
                   if (err) {

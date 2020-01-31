@@ -112,7 +112,7 @@ var invalidNpmName = function(name) {
 };
 
 var getPackagePath = function(pkg, version) {
-  return path.normalize(path.join(__dirname, '../', "../cdnjs/ajax/libs", pkg.name, version));
+  return path.normalize(path.join(BOT_BASE_PATH, "cdnjs", "ajax", "libs", pkg.name, version));
 };
 
 var getPackageTempPath = function(pkg, version) {
