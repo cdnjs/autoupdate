@@ -6,6 +6,7 @@ var _ = require('lodash');
 var path = require('path');
 var request = require('superagent');
 var tarball = require('tarball-extract');
+var chmodr = require('chmodr');
 
 var assert = require('assert');
 var fs = require('fs-extra');
@@ -22,6 +23,11 @@ if (process.env.BOT_CDNJS_NPM_TEMP === undefined) {
   throw 'BOT_CDNJS_NPM_TEMP is missing';
 }
 tempDirPath = process.env.BOT_CDNJS_NPM_TEMP;
+
+if (process.env.BOT_BASE_PATH === undefined) {
+  throw 'BOT_BASE_PATH is missing';
+}
+const BOT_BASE_PATH = process.env.BOT_BASE_PATH;
 
 
 var newVersionCount = 0;
@@ -113,85 +119,101 @@ var getPackageTempPath = function(pkg, version) {
   return path.normalize(path.join(__dirname, '../', GIT_REPO_LOCAL_FOLDER, pkg.name, version));
 };
 
-var processNewVersion = function(library, version) {
+var processNewVersion = function (pkg, version) {
+  var npmName = pkg.autoupdate.target;
 
   // sometimes the tar is extracted to a dir that isnt called 'package' - get that dir via glob
-  var extractLibPath = glob.sync(getPackageTempPath(library, version) + "/*/")[0];
-  var npmName = library.autoupdate.target;
+  var extractLibPath = glob.sync(getPackageTempPath(pkg, version) + '/*/')[0];
 
   if (!extractLibPath) {
     // even more rarely, the tar doesnt seem to get extracted at all.. which is probably a bug in that lib.
-    var msg = npmName + "@" + version +
-      " - never got extracted! This problem usually goes away on next run." +
-      " Couldnt find extract dir here: " + getPackageTempPath(library, version);
-    console.log(msg.red);
+    var msg = npmName + '@' + version +
+      ' - never got extracted! This problem usually goes away on next run.' +
+      ' Couldnt find extract dir here: ' + getPackageTempPath(pkg, version);
+    console.log(msg.error);
     return;
   }
 
-  var libPath = getPackagePath(library, version);
+  // trick to handle wrong permission lib like clipboard.js@0.0.7
+  fs.chmodSync(extractLibPath, 0755);
+  chmodr.sync(extractLibPath, 0755);
+
+  var libPath = getPackagePath(pkg, version);
   var isAllowedPath = isAllowedPathFn(extractLibPath);
   var newPath = path.join(libPath, 'package.json');
-
-  if (isThere(newPath)) { // turn this off for now
+  if (fs.existsSync(newPath)) { // turn this off for now
     var newPkg = parse(newPath);
     if (isValidFileMap(newPkg)) {
-      library.npmFileMap = newPkg.npmFileMap;
+      pkg.npmFileMap = newPkg.npmFileMap;
     }
   }
 
-  var npmFileMap = library.npmFileMap;
+  var npmFileMap = pkg.autoupdate.fileMap;
   var errors = [];
   var updated = false;
-  _.each(npmFileMap, function(fileSpec) {
-    var basePath = fileSpec.basePath || "";
-
-    _.each(fileSpec.files, function(file) {
+  _.each(npmFileMap, function (fileSpec) {
+    var basePath = fileSpec.basePath || '';
+    if (fileSpec.files.length === 0) {
+      fs.mkdirsSync(libPath);
+      return;
+    }
+    _.each(fileSpec.files, function (file) {
       var libContentsPath = path.normalize(path.join(extractLibPath, basePath));
       if (!isAllowedPath(libContentsPath)) {
-        errors.push(error(npmName + " contains a malicious file path: " +
+        errors.push(error(npmName + ' contains a malicious file path: ' +
           libContentsPath, error.FILE_PATH));
         return;
       }
-      var files = glob.sync(path.join(libContentsPath, file));
+
+      var files = glob.sync(path.join(libContentsPath, file), { nodir: true });
       if (files.length === 0) {
         // usually old versions have this problem
         var msg;
-        msg = (npmName + "@" + version + " - couldnt find file in npmFileMap.") +
-          (" Doesnt exist: " + path.join(libContentsPath, file)).info;
+        msg = (npmName + '@' + version + ' - couldnt find file in npmFileMap.') +
+          (' Doesnt exist: ' + path.join(libContentsPath, file)).info;
         fs.mkdirsSync(libPath);
         console.log(msg);
       }
 
-      _.each(files, function(extractFilePath) {
-        if (extractFilePath.match(/(dependencies|\.zip\s*$)/i)) {
+      _.each(files, function (extractFilePath) {
+        if (extractFilePath.match(/(\.zip\s*$)/i)) {
           return;
         }
+
         var copyPart = path.relative(libContentsPath, extractFilePath);
         var copyPath = path.join(libPath, copyPart);
-        fs.mkdirsSync(path.dirname(copyPath));
-        fs.copySync(extractFilePath, copyPath);
+        if (fs.statSync(extractFilePath).size !== 0){
+          // don't copy the empty file from the source
+          fs.mkdirsSync(path.dirname(copyPath));
+          fs.copySync(extractFilePath, copyPath);
+          fs.chmodSync(copyPath, '0644');
+        } else {
+          console.log('Warning! '.warn + copyPart.gray + ' is empty, file will not be copied!');
+        }
         updated = true;
       });
     });
   });
+
   if (updated) {
     newVersionCount++;
-    var libPatha = path.normalize(path.join(__dirname, 'ajax', 'libs', library.name, 'package.json'));
+    var libPatha = path.normalize(path.join(BOT_BASE_PATH, "cdnjs", 'ajax', 'libs', pkg.name, 'package.json'));
     console.log('------------'.red, libPatha.green);
     if (
-      (!library.version) ||
+      (!pkg.version) ||
       (
-        semver.gt(version, library.version) &&
+        semver.gt(version, pkg.version) &&
         (
           stable.is(version) ||
-          (!stable.is(version) && !stable.is(library.version))
+          (!stable.is(version) && !stable.is(pkg.version))
         )
       )
     ) {
-      library.version = version;
-      fs.writeFileSync(libPatha, JSON.stringify(library, null, 2) + '\n', 'utf8');
+      pkg.version = version;
+      fs.writeFileSync(libPatha, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
     }
   }
+
   return errors;
 };
 
