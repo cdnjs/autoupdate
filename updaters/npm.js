@@ -201,8 +201,6 @@ var updateLibraryVersion = function(library, tarballUrl, version, cb) {
     return cb(error(npmName + " has a malicious package name:" + library.name, error.PKG_NAME));
   }
 
-
-debugger
   var extractLibPath = getPackageTempPath(library, version);
   var libPath = getPackagePath(library, version);
 
@@ -260,10 +258,9 @@ var update = function(library, callback) {
       async.each(_.toPairs(result.body.versions), function(p, cb) {
         var data = p[1];
         var version = p[0];
-debugger
         updateLibraryVersion(library, data.dist.tarball, version, cb);
       }, function(err) {
-       	msg = 'Library "' + library.name + '" update finished' + (err ? ' ' + err.red : '');
+        msg = 'Library "' + library.name + '" update finished' + (err ? ' ' + err.red : '');
         console.log(msg);
         callback(null);
       });
