@@ -1,4 +1,3 @@
-
 var config = require('../config');
 var GIT_REPO_LOCAL_FOLDER = config.GIT_REPO_LOCAL_FOLDER;
 var git = require('gift');
