@@ -18,12 +18,11 @@ var semver = require('semver');
 var tempDirPath;
 var args;
 
-if (isThere('/run/shm')) {
-  fs.mkdirsSync('/run/shm/cdnjs_NPM_temp');
-  tempDirPath = '/run/shm/cdnjs_NPM_temp';
-} else {
-  tempDirPath = path.join(__dirname, 'temp');
+if (process.env.BOT_CDNJS_NPM_TEMP === undefined) {
+  throw 'BOT_CDNJS_NPM_TEMP is missing';
 }
+tempDirPath = process.env.BOT_CDNJS_NPM_TEMP;
+
 
 var newVersionCount = 0;
 var parse = function(jsonFile, ignoreMissing, ignoreParseFail) {
