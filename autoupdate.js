@@ -13,6 +13,10 @@ var npmUpdater = require('./updaters/npm');
 if (process.env.AUTOUPDATE_CONCURRENT_LIMIT === undefined) {
   throw 'AUTOUPDATE_CONCURRENT_LIMIT is missing';
 }
+if (process.env.BOT_BASE_PATH === undefined) {
+  throw 'BOT_BASE_PATH is missing';
+}
+const BOT_BASE_PATH = process.env.BOT_BASE_PATH;
 
 var asyncLimit = parseInt(process.env.AUTOUPDATE_CONCURRENT_LIMIT);
 
@@ -42,7 +46,7 @@ var initialize = function (err) {
     var args = process.argv.slice(2);
     var globPattern = (args.length === 1) ? args[0] : '*';
     var filenames = glob.sync(path.normalize(path.join(
-      __dirname, config.CDNJS_FOLDER, '/ajax/libs/' + globPattern + '/package.json'
+      process.env.BOT_BASE_PATH, "cdnjs", 'ajax', 'libs',  globPattern, 'package.json'
     )));
     var librarys = _.chain(filenames)
       .map(function (filename) {
