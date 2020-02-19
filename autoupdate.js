@@ -21,6 +21,16 @@ const BOT_BASE_PATH = process.env.BOT_BASE_PATH;
 var asyncLimit = parseInt(process.env.AUTOUPDATE_CONCURRENT_LIMIT);
 
 var startAutoUpdate = function (library, callback) {
+  // if the package has a .do_not_update file we ignore the update process for
+  // it and move on.
+  const doNotUpdatePath = path.join(
+    process.env.BOT_BASE_PATH, "cdnjs", 'ajax', 'libs',  library.name, '.do_not_update'
+  )
+  if (fs.existsSync(doNotUpdatePath)) {
+    console.log('package has .do_not_update; ignore');
+    return callback(null, 0)
+  }
+
   console.log('\n');
   console.log(library.name.yellow);
   var source = library.autoupdate.source;
